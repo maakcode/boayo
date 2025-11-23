@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  font-family: sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  font-weight: 400;
+
+  color: var(--color-neutral-100);
+  background-color: var(--color-neutral-800);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body,
+#root {
+  @apply w-full h-full m-0 p-0;
+}
+
+@layer components {
+  button {
+    @apply font-medium select-none cursor-pointer;
+  }
+}
