@@ -1,18 +1,29 @@
 import {
   createContext,
   useContext,
+  useEffect,
+  useRef,
   useState,
   type PropsWithChildren,
 } from "react";
+import { load as storeLoad, type Store } from "@tauri-apps/plugin-store";
 
 type PageMode = "single" | "double";
 
 interface ViewerSettingsContextType {
   pageMode: PageMode;
-  setPageMode: (mode: PageMode) => void;
+  updatePageMode: (mode: PageMode) => void;
   rtlMode: boolean;
-  setRtlMode: (mode: boolean) => void;
+  updateRtlMode: (mode: boolean) => void;
 }
+
+const STORE_CONFIG = {
+  PATH: "settings.json",
+  KEYS: {
+    PAGE_MODE: "page-mode",
+    RTL_MODE: "rtl-mode",
+  },
+} as const;
 
 const ViewerSettingsContext = createContext<ViewerSettingsContextType | null>(
   null
@@ -21,10 +32,48 @@ const ViewerSettingsContext = createContext<ViewerSettingsContextType | null>(
 export function ViewerSettingsProvider({ children }: PropsWithChildren) {
   const [pageMode, setPageMode] = useState<PageMode>("single");
   const [rtlMode, setRtlMode] = useState(false);
+  const storeRef = useRef<Store | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      storeRef.current = await storeLoad(STORE_CONFIG.PATH);
+      const storedPageMode = await storeRef.current.get<PageMode>(
+        STORE_CONFIG.KEYS.PAGE_MODE
+      );
+      const storedRtlMode = await storeRef.current.get<boolean>(
+        STORE_CONFIG.KEYS.RTL_MODE
+      );
+
+      if (storedPageMode !== undefined) {
+        setPageMode(storedPageMode);
+      }
+      if (storedRtlMode !== undefined) {
+        setRtlMode(storedRtlMode);
+      }
+    })();
+  }, []);
+
+  const updatePageMode = (mode: PageMode) => {
+    setPageMode(mode);
+    storeRef.current
+      ?.set(STORE_CONFIG.KEYS.PAGE_MODE, mode)
+      .then(() => {
+        storeRef.current?.save();
+      });
+  };
+
+  const updateRtlMode = (mode: boolean) => {
+    setRtlMode(mode);
+    storeRef.current
+      ?.set(STORE_CONFIG.KEYS.RTL_MODE, mode)
+      .then(() => {
+        storeRef.current?.save();
+      });
+  };
 
   return (
     <ViewerSettingsContext.Provider
-      value={{ pageMode, setPageMode, rtlMode, setRtlMode }}
+      value={{ pageMode, updatePageMode, rtlMode, updateRtlMode }}
     >
       {children}
     </ViewerSettingsContext.Provider>

@@ -9,7 +9,8 @@ interface ImageViewerProps {
 
 export default function ImageViewer({ images, onReset }: ImageViewerProps) {
   const [page, setPage] = useState(0);
-  const { pageMode, setPageMode, rtlMode, setRtlMode } = useViewerSettings();
+  const { pageMode, updatePageMode, rtlMode, updateRtlMode } =
+    useViewerSettings();
 
   const keydownEventHandler = useEffectEvent((event: KeyboardEvent) => {
     if (event.key === "ArrowRight" || event.key === "v") {
@@ -25,11 +26,11 @@ export default function ImageViewer({ images, onReset }: ImageViewerProps) {
         setPage(previousPage);
       }
     } else if (event.key === "2") {
-      setPageMode("double");
+      updatePageMode("double");
     } else if (event.key === "1") {
-      setPageMode("single");
+      updatePageMode("single");
     } else if (event.key === "`" || event.key === "₩") {
-      setRtlMode(!rtlMode);
+      updateRtlMode(!rtlMode);
     } else if (event.key === "Escape") {
       onReset?.();
     }
