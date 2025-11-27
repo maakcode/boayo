@@ -1120,6 +1120,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/plugin-fs@npm:~2":
+  version: 2.4.4
+  resolution: "@tauri-apps/plugin-fs@npm:2.4.4"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.8.0"
+  checksum: 10c0/18f063038c72f8f4741fcec4b5252c13a1ff4024b0bffa5000099faa8f1c77ccc92bb52a5be9bc9dc075a77d4d7e5a28e47b51a8f29ab6a3988e3b19b9bec0d6
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/plugin-log@npm:~2":
   version: 2.7.1
   resolution: "@tauri-apps/plugin-log@npm:2.7.1"
@@ -1588,6 +1597,7 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.1.17"
     "@tauri-apps/api": "npm:^2"
     "@tauri-apps/cli": "npm:^2"
+    "@tauri-apps/plugin-fs": "npm:~2"
     "@tauri-apps/plugin-log": "npm:~2"
     "@tauri-apps/plugin-opener": "npm:^2"
     "@types/lodash": "npm:^4"
