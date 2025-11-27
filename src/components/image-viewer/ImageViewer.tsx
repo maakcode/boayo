@@ -1,5 +1,6 @@
 import { useEffect, useEffectEvent, useState } from "react";
 import { info } from "@tauri-apps/plugin-log";
+import { useViewerSettings } from "@/contexts/ViewerSettingsContext";
 
 interface ImageViewerProps {
   images: string[];
@@ -8,8 +9,7 @@ interface ImageViewerProps {
 
 export default function ImageViewer({ images, onReset }: ImageViewerProps) {
   const [page, setPage] = useState(0);
-  const [pageMode, setPageMode] = useState<"single" | "double">("single");
-  const [rtlMode, setRtlMode] = useState(false);
+  const { pageMode, setPageMode, rtlMode, setRtlMode } = useViewerSettings();
 
   const keydownEventHandler = useEffectEvent((event: KeyboardEvent) => {
     if (event.key === "ArrowRight" || event.key === "v") {
@@ -29,7 +29,7 @@ export default function ImageViewer({ images, onReset }: ImageViewerProps) {
     } else if (event.key === "1") {
       setPageMode("single");
     } else if (event.key === "`" || event.key === "₩") {
-      setRtlMode((value) => !value);
+      setRtlMode(!rtlMode);
     } else if (event.key === "Escape") {
       onReset?.();
     }
