@@ -5,11 +5,19 @@ import { readDir } from "@tauri-apps/plugin-fs";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { EventCallback, UnlistenFn } from "@tauri-apps/api/event";
 import debounce from "lodash/debounce";
+import ImageViewer from "./components/image-viewer/ImageViewer";
 import { convertFileSrc } from "@tauri-apps/api/core";
+
+interface ImageDirectory {
+  path: string;
+  images: string[];
+}
 
 export default function App() {
   const [dragging, setDragging] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
+  const [imageDirectory, setImageDirectory] = useState<ImageDirectory | null>(
+    null
+  );
 
   const handleDrop = useEffectEvent(
     debounce<EventCallback<{ paths: string[] }>>(async (event) => {
@@ -32,7 +40,10 @@ export default function App() {
             return convertFileSrc(fullPath);
           });
 
-        setImages(files);
+        setImageDirectory({
+          path,
+          images: files,
+        });
       } catch (error) {
         info(`drop error: ${error}`);
       }
@@ -83,16 +94,20 @@ export default function App() {
     };
   }, []);
 
+  const handleReset = () => {
+    setImageDirectory(null);
+  };
+
   return (
-    <main className={`flex h-full ${dragging ? "bg-gray-700" : "bg-gray-800"}`}>
-      {images.length === 0 ? (
+    <main className={`flex h-full ${dragging ? "bg-gray-700" : "bg-gray-900"}`}>
+      {!imageDirectory?.images.length ? (
         <p>Drop drectory here to open</p>
       ) : (
-        <ol>
-          {images.map((image) => (
-            <li key={image}>{image}</li>
-          ))}
-        </ol>
+        <ImageViewer
+          key={imageDirectory.path}
+          images={imageDirectory.images}
+          onReset={handleReset}
+        />
       )}
     </main>
   );
