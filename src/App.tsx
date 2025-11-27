@@ -5,6 +5,7 @@ import { readDir } from "@tauri-apps/plugin-fs";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { EventCallback, UnlistenFn } from "@tauri-apps/api/event";
 import debounce from "lodash/debounce";
+import { convertFileSrc } from "@tauri-apps/api/core";
 
 export default function App() {
   const [dragging, setDragging] = useState(false);
@@ -26,7 +27,10 @@ export default function App() {
               !entry.isSymlink &&
               entry.name.match(/\.(?:jpg|jpeg|png|gif|bmp|webp|avif)$/)
           )
-          .map((entry) => entry.name);
+          .map((entry) => {
+            const fullPath = [path, entry.name].join("/");
+            return convertFileSrc(fullPath);
+          });
 
         setImages(files);
       } catch (error) {
