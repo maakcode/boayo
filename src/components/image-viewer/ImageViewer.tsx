@@ -56,9 +56,21 @@ export default function ImageViewer({ images, onReset }: ImageViewerProps) {
           return index === page || index === page + 1;
         })();
 
+        const justifyStyle = (() => {
+          if (pageMode === "single") {
+            return "justify-center";
+          }
+          return index % 2 === 0 ? "justify-end" : "justify-start";
+        })();
+
         return (
-          <li key={image} className={`flex-1 ${visible ? "block" : "hidden"}`}>
-            <img src={image} alt="" className="h-full mx-auto object-contain" />
+          <li
+            key={image}
+            className={`flex-1 ${visible ? "flex" : "hidden"} ${justifyStyle} ${
+              rtlMode ? "flex-row-reverse" : "flex-row"
+            }`}
+          >
+            <img src={image} alt="" className="h-full object-contain" />
           </li>
         );
       })}
