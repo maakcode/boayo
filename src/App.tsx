@@ -35,6 +35,7 @@ export default function App() {
               !entry.isSymlink &&
               entry.name.match(/\.(?:jpg|jpeg|png|gif|bmp|webp|avif)$/)
           )
+          .sort((lhs, rhs) => getFileNumber(lhs.name) - getFileNumber(rhs.name))
           .map((entry) => {
             const fullPath = [path, entry.name].join("/");
             return convertFileSrc(fullPath);
@@ -111,4 +112,8 @@ export default function App() {
       )}
     </main>
   );
+}
+
+function getFileNumber(name: string): number {
+  return Number(name.replace(/\.[^.]+$/, "").replace(/\D/g, "")) || 0;
 }
