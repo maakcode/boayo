@@ -43,6 +43,18 @@ export default function ImageViewer({
       if (0 <= previousPage) {
         onChangePage?.(previousPage);
       }
+    } else if (event.code === "KeyB") {
+      let nextPage = page + 10;
+      if (images.length - 1 < nextPage) {
+        nextPage = images.length - (pageMode === "single" ? 1 : 2);
+      }
+      onChangePage?.(nextPage);
+    } else if (event.code === "KeyX") {
+      let previousPage = page - 10;
+      if (previousPage < 0) {
+        previousPage = 0;
+      }
+      onChangePage?.(previousPage);
     } else if (event.code === "Digit2") {
       updatePageMode("double");
     } else if (event.code === "Digit1") {
