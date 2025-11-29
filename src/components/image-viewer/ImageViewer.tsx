@@ -83,6 +83,11 @@ export default function ImageViewer({
           if (pageMode === "single") {
             return "justify-center";
           }
+
+          if (index === images.length - 1 && page % 2 !== images.length % 2) {
+            return "justify-center";
+          }
+
           return index % 2 === page % 2 ? "justify-end" : "justify-start";
         })();
 
