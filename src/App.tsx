@@ -7,6 +7,7 @@ import type { EventCallback, UnlistenFn } from "@tauri-apps/api/event";
 import debounce from "lodash/debounce";
 import ImageViewer from "./components/image-viewer/ImageViewer";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import EmptyLogo from "./components/empty-logo/EmptyLogo";
 
 interface ImageDirectory {
   path: string;
@@ -102,7 +103,7 @@ export default function App() {
   return (
     <main className={`flex h-full ${dragging ? "bg-gray-700" : "bg-gray-900"}`}>
       {!imageDirectory?.images.length ? (
-        <p>Drop drectory here to open</p>
+        <EmptyLogo className="flex-1" />
       ) : (
         <ImageViewer
           key={imageDirectory.path}
