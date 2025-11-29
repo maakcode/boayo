@@ -19,29 +19,41 @@ export default function ImageViewer({
     useViewerSettings();
 
   const keydownEventHandler = useEffectEvent((event: KeyboardEvent) => {
-    if (event.key === "ArrowRight" || event.key === "v") {
-      const nextPage = page + (pageMode === "single" ? 1 : 2);
+    if (event.code === "ArrowRight" || event.code === "KeyV") {
+      const step = (() => {
+        if (pageMode === "single" || event.shiftKey) return 1;
+
+        return 2;
+      })();
+
+      const nextPage = page + step;
 
       if (nextPage <= images.length - 1) {
         onChangePage?.(nextPage);
       }
-    } else if (event.key === "ArrowLeft" || event.key === "c") {
-      const previousPage = page - (pageMode === "single" ? 1 : 2);
+    } else if (event.code === "ArrowLeft" || event.code === "KeyC") {
+      const step = (() => {
+        if (pageMode === "single" || event.shiftKey) return 1;
+
+        return 2;
+      })();
+
+      const previousPage = page - step;
 
       if (0 <= previousPage) {
         onChangePage?.(previousPage);
       }
-    } else if (event.key === "2") {
+    } else if (event.code === "Digit2") {
       updatePageMode("double");
-    } else if (event.key === "1") {
+    } else if (event.code === "Digit1") {
       updatePageMode("single");
-    } else if (event.key === "`" || event.key === "₩") {
+    } else if (event.code === "Backquote") {
       updateRtlMode(!rtlMode);
-    } else if (event.key === "Escape") {
+    } else if (event.code === "Escape") {
       onReset?.();
     }
 
-    info(`keydown ${event.key}`);
+    info(`keydown ${event.code}`);
   });
 
   useEffect(() => {
@@ -71,7 +83,7 @@ export default function ImageViewer({
           if (pageMode === "single") {
             return "justify-center";
           }
-          return index % 2 === 0 ? "justify-end" : "justify-start";
+          return index % 2 === page % 2 ? "justify-end" : "justify-start";
         })();
 
         return (
