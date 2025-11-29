@@ -1,14 +1,20 @@
-import { useEffect, useEffectEvent, useState } from "react";
+import { useEffect, useEffectEvent } from "react";
 import { info } from "@tauri-apps/plugin-log";
 import { useViewerSettings } from "@/contexts/ViewerSettingsContext";
 
 interface ImageViewerProps {
   images: string[];
+  page: number;
+  onChangePage?(page: number): void;
   onReset?(): void;
 }
 
-export default function ImageViewer({ images, onReset }: ImageViewerProps) {
-  const [page, setPage] = useState(0);
+export default function ImageViewer({
+  images,
+  page,
+  onChangePage,
+  onReset,
+}: ImageViewerProps) {
   const { pageMode, updatePageMode, rtlMode, updateRtlMode } =
     useViewerSettings();
 
@@ -17,13 +23,13 @@ export default function ImageViewer({ images, onReset }: ImageViewerProps) {
       const nextPage = page + (pageMode === "single" ? 1 : 2);
 
       if (nextPage <= images.length - 1) {
-        setPage(nextPage);
+        onChangePage?.(nextPage);
       }
     } else if (event.key === "ArrowLeft" || event.key === "c") {
       const previousPage = page - (pageMode === "single" ? 1 : 2);
 
       if (0 <= previousPage) {
-        setPage(previousPage);
+        onChangePage?.(previousPage);
       }
     } else if (event.key === "2") {
       updatePageMode("double");

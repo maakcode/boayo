@@ -8,6 +8,7 @@ import debounce from "lodash/debounce";
 import ImageViewer from "./components/image-viewer/ImageViewer";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import EmptyLogo from "./components/empty-logo/EmptyLogo";
+import { getName } from "@tauri-apps/api/app";
 
 interface ImageDirectory {
   path: string;
@@ -16,6 +17,7 @@ interface ImageDirectory {
 
 export default function App() {
   const [dragging, setDragging] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const [imageDirectory, setImageDirectory] = useState<ImageDirectory | null>(
     null
   );
@@ -42,6 +44,7 @@ export default function App() {
             return convertFileSrc(fullPath);
           });
 
+        setCurrentPage(0);
         setImageDirectory({
           path,
           images: files,
@@ -96,8 +99,30 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const currentWindow = await getCurrentWindow();
+      const title = await (async () => {
+        if (imageDirectory && imageDirectory.images.length > 0) {
+          const directoryName =
+            imageDirectory.path.split("/").slice(-1)[0] || "";
+
+          return `${directoryName} - ${currentPage + 1} / ${
+            imageDirectory.images.length
+          }`;
+        }
+        return await getName();
+      })();
+      await currentWindow.setTitle(title);
+    })();
+  }, [imageDirectory, currentPage]);
+
   const handleReset = () => {
     setImageDirectory(null);
+  };
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -111,6 +136,8 @@ export default function App() {
         <ImageViewer
           key={imageDirectory.path}
           images={imageDirectory.images}
+          page={currentPage}
+          onChangePage={handleChangePage}
           onReset={handleReset}
         />
       )}

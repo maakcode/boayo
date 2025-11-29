@@ -15,7 +15,9 @@
         "title": "boayo",
         "width": 800,
         "height": 600,
-        "acceptFirstMouse": true
+        "acceptFirstMouse": true,
+        "titleBarStyle": "Transparent",
+        "backgroundColor": "#111827"
       }
     ],
     "security": {
