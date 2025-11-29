@@ -47,7 +47,11 @@ export default function ImageViewer({ images, onReset }: ImageViewerProps) {
   }, []);
 
   return (
-    <ol className={`flex flex-1 ${rtlMode ? "flex-row-reverse" : "flex-row"}`}>
+    <ol
+      className={`flex flex-1 pointer-events-none ${
+        rtlMode ? "flex-row-reverse" : "flex-row"
+      }`}
+    >
       {images.map((image, index) => {
         const visible = (() => {
           if (pageMode === "single") {

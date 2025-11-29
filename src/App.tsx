@@ -101,7 +101,10 @@ export default function App() {
   };
 
   return (
-    <main className={`flex h-full ${dragging ? "bg-gray-700" : "bg-gray-900"}`}>
+    <main
+      data-tauri-drag-region
+      className={`flex h-full ${dragging ? "bg-gray-700" : "bg-gray-900"}`}
+    >
       {!imageDirectory?.images.length ? (
         <EmptyLogo className="flex-1" />
       ) : (
