@@ -15,8 +15,14 @@ export default function ImageViewer({
   onChangePage,
   onReset,
 }: ImageViewerProps) {
-  const { pageMode, updatePageMode, rtlMode, updateRtlMode } =
-    useViewerSettings();
+  const {
+    pageMode,
+    updatePageMode,
+    rtlMode,
+    updateRtlMode,
+    scaleMode,
+    updateScaleMode,
+  } = useViewerSettings();
 
   const keydownEventHandler = useEffectEvent((event: KeyboardEvent) => {
     if (event.code === "ArrowRight" || event.code === "KeyV") {
@@ -55,6 +61,8 @@ export default function ImageViewer({
         previousPage = 0;
       }
       onChangePage?.(previousPage);
+    } else if (event.code === "KeyZ") {
+      updateScaleMode(!scaleMode);
     } else if (event.code === "Digit2") {
       updatePageMode("double");
     } else if (event.code === "Digit1") {
@@ -110,7 +118,11 @@ export default function ImageViewer({
               rtlMode ? "flex-row-reverse" : "flex-row"
             }`}
           >
-            <img src={image} alt="" className="h-full object-contain" />
+            <img
+              src={image}
+              alt=""
+              className={`object-contain ${scaleMode ? "h-full" : ""}`}
+            />
           </li>
         );
       })}
