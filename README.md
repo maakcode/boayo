@@ -2,6 +2,8 @@
 
 `Boayo` is a lightweight yet powerful cross-platform image viewer powered by Tauri.
 
+<img width="512" height="411" alt="boayo-intro-0" src="https://github.com/user-attachments/assets/7e1b2638-88dc-4cac-afd1-d0fac2c064ef" />
+
 ## Key Features
 
 - **Supported Image Formats:** `jpg`, `png`, `gif`, `bmp`, `webp`, `avif`
