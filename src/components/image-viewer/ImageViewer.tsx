@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { info } from "@tauri-apps/plugin-log";
 import { useViewerSettings } from "@/contexts/ViewerSettingsContext";
 
@@ -23,6 +23,7 @@ export default function ImageViewer({
     scaleMode,
     updateScaleMode,
   } = useViewerSettings();
+  const lastUpdateAt = useRef(0);
 
   const keydownEventHandler = useEffectEvent((event: KeyboardEvent) => {
     if (event.code === "ArrowRight" || event.code === "KeyV") {
@@ -76,11 +77,39 @@ export default function ImageViewer({
     info(`keydown ${event.code}`);
   });
 
+  const mouseWheelHandler = useEffectEvent((event: WheelEvent) => {
+    if (Date.now() - lastUpdateAt.current < 100) return;
+
+    lastUpdateAt.current = Date.now();
+
+    if (event.deltaY < -4 || event.deltaX < -4) {
+      const step = (() => {
+        if (pageMode === "single" || event.shiftKey) return 1;
+        return 2;
+      })();
+      const nextPage = page + step;
+      if (nextPage <= images.length - 1) {
+        onChangePage?.(nextPage);
+      }
+    } else if (event.deltaY > 4 || event.deltaX > 4) {
+      const step = (() => {
+        if (pageMode === "single" || event.shiftKey) return 1;
+        return 2;
+      })();
+      const previousPage = page - step;
+      if (0 <= previousPage) {
+        onChangePage?.(previousPage);
+      }
+    }
+  });
+
   useEffect(() => {
     window.addEventListener("keydown", keydownEventHandler);
+    window.addEventListener("wheel", mouseWheelHandler);
 
     return () => {
       window.removeEventListener("keydown", keydownEventHandler);
+      window.removeEventListener("wheel", mouseWheelHandler);
     };
   }, []);
 
