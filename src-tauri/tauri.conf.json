@@ -13,8 +13,10 @@
     "windows": [
       {
         "title": "boayo",
-        "width": 800,
-        "height": 600,
+        "width": 1024,
+        "height": 768,
+        "minWidth": 1024,
+        "minHeight": 768,
         "acceptFirstMouse": true,
         "titleBarStyle": "Transparent",
         "backgroundColor": "#111827"
