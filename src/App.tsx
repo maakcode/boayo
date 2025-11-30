@@ -9,6 +9,7 @@ import ImageViewer from "./components/image-viewer/ImageViewer";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import EmptyLogo from "./components/empty-logo/EmptyLogo";
 import { getName } from "@tauri-apps/api/app";
+import HelpOverlay from "./components/help-overlay/HelpOverlay";
 
 interface ImageDirectory {
   path: string;
@@ -141,6 +142,7 @@ export default function App() {
           onReset={handleReset}
         />
       )}
+      <HelpOverlay />
     </main>
   );
 }

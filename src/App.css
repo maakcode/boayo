@@ -33,6 +33,10 @@ img {
   -webkit-user-drag: none;
 }
 
+kbd {
+  @apply text-neutral-600 bg-neutral-400 px-1 rounded-sm;
+}
+
 @layer components {
   button {
     @apply font-medium select-none cursor-pointer;
