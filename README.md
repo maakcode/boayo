@@ -2,7 +2,8 @@
 
 `Boayo` is a lightweight yet powerful cross-platform image viewer powered by Tauri.
 
-<img width="512" height="411" alt="boayo-intro-0" src="https://github.com/user-attachments/assets/7e1b2638-88dc-4cac-afd1-d0fac2c064ef" />
+<img width="512" alt="boayo-intro-0" src="https://github.com/user-attachments/assets/593ef17a-a9b9-41cd-8fb7-7af7ef2229a5" />
+
 
 ## Key Features
 
