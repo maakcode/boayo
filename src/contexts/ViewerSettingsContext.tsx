@@ -39,7 +39,11 @@ export function ViewerSettingsProvider({ children }: PropsWithChildren) {
   const storeRef = useRef<Store | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     (async () => {
+      if (!mounted) return;
+
       storeRef.current = await storeLoad(STORE_CONFIG.PATH);
       const storedPageMode = await storeRef.current.get<PageMode>(
         STORE_CONFIG.KEYS.PAGE_MODE
@@ -61,6 +65,10 @@ export function ViewerSettingsProvider({ children }: PropsWithChildren) {
         setScaleMode(storedScaleMode);
       }
     })();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const updatePageMode = (mode: PageMode) => {
