@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Tauri";
+  src: url("./Tauri-Regular.ttf");
+  font-weight: 400;
+}
+
 :root {
-  font-family: sans-serif;
+  font-family: Tauri, sans-serif;
   font-size: 1.1rem;
   line-height: 1.2;
   font-weight: 400;
